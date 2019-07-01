@@ -13,6 +13,7 @@ class Form extends React.Component {
     event.preventDefault();
     const myKey = "AIzaSyC7etpGfup0-A3HssAIzYe_mlljnOo4iPE";
     const searchTerm = this.state.searchTerm;
+    
     let url ='';
     if (!this.state.filterBook && !this.state.filterPrint){
      url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${myKey}`;}
@@ -30,13 +31,14 @@ class Form extends React.Component {
         response.ok ? response.json() : Promise.reject(response.statusText)
       )
       .then(data => {
-        if(this.state.filterBook || this.state.filterPrint){
+       /*  if(this.state.filterBook || this.state.filterPrint){
         this.setState({
           searchTerm 
         })} else {
           this.setState({searchTerm : ''})
+          console.log(searchTerm,'in else')
         }
-        console.log(this.state)
+        console.log(this.state) */
         const books = [];
         data.items.map(book => {
         book = {
@@ -60,6 +62,7 @@ class Form extends React.Component {
     this.setState({
       searchTerm
     });
+    console.log(this.state)
   };
 
   filterSelectedBookType = (filterBook)=>{

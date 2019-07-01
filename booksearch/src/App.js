@@ -7,6 +7,7 @@ import Form from "./form";
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.bookList = React.createRef();
     this.state = {
       books: []
     };
@@ -16,6 +17,7 @@ class App extends React.Component {
     this.setState({
       books
     });
+    console.log(this.state)
   };
 
   render() {
@@ -24,8 +26,9 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header />
-        <Form updateBooklist={this.updateBooklist} />
+        <Form updateBooklist={this.bookList.updateBooklist} />
         <BookList
+          ref={this.bookList}
          books = {this.state.books}
         />
       </div>
