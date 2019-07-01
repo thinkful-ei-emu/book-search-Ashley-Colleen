@@ -5,24 +5,20 @@ class Form extends React.Component {
     super(props);
     this.state = {
       searchTerm: "",
-      filterBook: "",
-      filterPrint: "",
+      filterBook: "partial",
+      filterPrint: "all",
     };
   }
   handleSubmit = event => {
     event.preventDefault();
     const myKey = "AIzaSyC7etpGfup0-A3HssAIzYe_mlljnOo4iPE";
     const searchTerm = this.state.searchTerm;
-    let url ='';
-    if (!this.state.filterBook && !this.state.filterPrint){
-     url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${myKey}`;}
-    else if (this.state.filterBook && !this.state.filterPrint){
-      url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&filter=${this.state.filterBook}&key=${myKey}`
-    } else if(!this.state.filterBook && this.state.filterPrint){
-      url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&printType=${this.state.filterPrint}&key=${myKey}`
-    } else {
-      url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&printType=${this.state.filterPrint}&filter=${this.state.filterBook}&key=${myKey}`
-    }
+    const filterPrint = this.state.filterPrint;
+    const filterBook = this.state.filterBook;
+    
+    
+    let url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&printType=${filterPrint}&filter=${filterBook}&key=${myKey}`
+       
 
     console.log(searchTerm);
     fetch(url)
@@ -30,12 +26,9 @@ class Form extends React.Component {
         response.ok ? response.json() : Promise.reject(response.statusText)
       )
       .then(data => {
-        if(this.state.filterBook || this.state.filterPrint){
-        this.setState({
-          searchTerm 
-        })} else {
-          this.setState({searchTerm : ''})
-        }
+        
+        this.setState({searchTerm : ''})
+        
         console.log(this.state)
         const books = [];
         data.items.map(book => {
@@ -52,6 +45,7 @@ class Form extends React.Component {
         this.props.updateBooklist(books);        
        
       })
+      
           
   };
   
@@ -86,8 +80,7 @@ class Form extends React.Component {
           <button type="submit">Search</button>
           <label name="">Book Type</label>
           <select onChange={event => {
-            this.filterSelectedBookType(event.target.value);
-           this.handleSubmit(event)}}>
+            this.filterSelectedBookType(event.target.value)}}>
             <option value="partial">Partial</option>
             <option value="full">Full</option>
             <option value="ebooks">E-Books</option>
