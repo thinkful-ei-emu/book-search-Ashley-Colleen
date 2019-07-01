@@ -18,6 +18,11 @@ class Form extends React.Component {
         response.ok ? response.json() : Promise.reject(response.statusText)
       )
       .then(data => {
+        this.setState({
+          searchTerm: ''
+        })
+        console.log(this.state)
+        const books = [];
         data.items.map(book => {
         book = {
             title: book.volumeInfo.title,
@@ -26,14 +31,17 @@ class Form extends React.Component {
             description: book.volumeInfo.description,
             image: book.volumeInfo.imageLinks.thumbnail
           };
-          console.log(book);
-        });
-        
-        this.setState = {};
-      });
+          books.push(book);          
+        })
+        this.props.updateBooklist(books);        
+       
+      })
+          
   };
+  
 
-  searchTermUpdated = searchTerm => {
+  searchTermUpdated = (searchTerm) => {
+   
     this.setState({
       searchTerm
     });
@@ -47,6 +55,7 @@ class Form extends React.Component {
           <input
             name="search"
             type="text"
+            value= {this.state.searchTerm}
             onChange={event => this.searchTermUpdated(event.target.value)}
           />
           <label name="">Book Type</label>

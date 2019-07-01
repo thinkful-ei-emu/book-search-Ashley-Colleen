@@ -14,7 +14,12 @@ class App extends React.Component {
     }
   }
 
-  
+  updateBooklist = (books) => {
+    this.setState({
+      books
+
+    })
+  } 
         
         
         
@@ -27,7 +32,7 @@ class App extends React.Component {
 return (
 <div className='App'>
   <Header />
-  <Form  />
+  <Form updateBooklist = {this.updateBooklist} />
   <BookList title="Jawz" author="Betty" retailPrice="100" description="something" image="www.google.com"/>
 
   </div>
