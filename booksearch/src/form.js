@@ -4,18 +4,44 @@ class Form extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      
+      searchTerm: ''
     }
+  }
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const myKey= 'AIzaSyC7etpGfup0-A3HssAIzYe_mlljnOo4iPE';
+    const searchTerm = this.state.searchTerm;
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${myKey}`
+    console.log(searchTerm);
+    fetch(url)
+      .then(response => {response.ok ? response.json() : Promise.reject(response.statusText)})
+      .then(data => {
+        console.log(Object.keys(data));
+        this.setState = {
+
+        }
+      })
+  }  
+
+  searchTermUpdated = (searchTerm) => {
+    console.log("State:", this.state);
+    console.log("Search term:", searchTerm);
+    this.setState({
+      searchTerm
+    }) 
+     
+        
+
   }
 
   render(){
     return (
       <div className="form">
-        <form>
-          <label for="search">Search</label>
-          <input name="search"type="text"/>
+        <form onSubmit= {(event)=> this.handleSubmit(event) }>
+          <label htmlFor="search">Search</label>
+          <input name="search"type="text" onChange={event => this.searchTermUpdated(event.target.value)} />
           <label name="">Book Type</label>
-          <button>Search</button>
+          <button type="submit"  >Search</button>
           <select>
             <option value="partial">Partial</option>
             <option value="full">Full</option>
